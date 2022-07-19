@@ -1,0 +1,10 @@
+../Drivers/STM32WLxx_HAL_Driver/Inc/stm32wlxx_ll_rcc.h:1971:22:LL_RCC_SetClkAfterWakeFromStop	16	static
+../Core/Src/sys_app.c:83:6:SystemApp_Init	8	static
+../Core/Src/sys_app.c:125:6:UTIL_SEQ_Idle	8	static
+../Core/Src/sys_app.c:142:13:TimestampNow	32	static
+../Core/Src/sys_app.c:156:6:UTIL_ADV_TRACE_PreSendHook	8	static
+../Core/Src/sys_app.c:167:6:UTIL_ADV_TRACE_PostSendHook	8	static
+../Core/Src/sys_app.c:178:13:tiny_snprintf_like	24	static
+../Core/Src/sys_app.c:201:19:HAL_InitTick	16	static
+../Core/Src/sys_app.c:216:10:HAL_GetTick	16	static
+../Core/Src/sys_app.c:248:6:HAL_Delay	16	static

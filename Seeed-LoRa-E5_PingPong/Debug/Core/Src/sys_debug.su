@@ -1,0 +1,3 @@
+../Drivers/STM32WLxx_HAL_Driver/Inc/stm32wlxx_ll_bus.h:449:22:LL_AHB2_GRP1_EnableClock	24	static
+../Drivers/STM32WLxx_HAL_Driver/Inc/stm32wlxx_ll_exti.h:336:22:LL_EXTI_EnableIT_32_63	16	static
+../Core/Src/sys_debug.c:64:6:DBG_Init	32	static
