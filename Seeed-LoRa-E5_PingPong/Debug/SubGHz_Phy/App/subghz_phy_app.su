@@ -1,6 +1,7 @@
-../SubGHz_Phy/App/subghz_phy_app.c:90:6:SubghzApp_Init	8	static
-../SubGHz_Phy/App/subghz_phy_app.c:115:13:OnTxDone	4	static
-../SubGHz_Phy/App/subghz_phy_app.c:121:13:OnRxDone	24	static
-../SubGHz_Phy/App/subghz_phy_app.c:127:13:OnTxTimeout	4	static
-../SubGHz_Phy/App/subghz_phy_app.c:133:13:OnRxTimeout	4	static
-../SubGHz_Phy/App/subghz_phy_app.c:139:13:OnRxError	4	static
+../SubGHz_Phy/App/subghz_phy_app.c:148:6:SubghzApp_Init	56	static
+../SubGHz_Phy/App/subghz_phy_app.c:241:13:PingPong_Process	8	static
+../SubGHz_Phy/App/subghz_phy_app.c:340:13:OnTxDone	8	static
+../SubGHz_Phy/App/subghz_phy_app.c:351:13:OnRxDone	40	static
+../SubGHz_Phy/App/subghz_phy_app.c:392:13:OnTxTimeout	8	static
+../SubGHz_Phy/App/subghz_phy_app.c:403:13:OnRxTimeout	8	static
+../SubGHz_Phy/App/subghz_phy_app.c:414:13:OnRxError	8	static

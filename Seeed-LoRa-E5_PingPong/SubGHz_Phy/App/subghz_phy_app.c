@@ -25,6 +25,11 @@
 #include "radio.h"
 
 /* USER CODE BEGIN Includes */
+#include "stm32_timer.h"
+#include "stm32_seq.h"
+#include "utilities_def.h"
+#include "app_version.h"
+#include "subghz_phy_version.h"
 /* USER CODE END Includes */
 
 /* External variables ---------------------------------------------------------*/
@@ -33,6 +38,15 @@
 /* USER CODE END EV */
 
 /* Private typedef -----------------------------------------------------------*/
+typedef enum
+{
+  LOWPOWER,
+  RX,
+  RX_TIMEOUT,
+  RX_ERROR,
+  TX,
+  TX_TIMEOUT,
+} States_t;
 
 /* USER CODE BEGIN PTD */
 /* USER CODE END PTD */
@@ -47,6 +61,43 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
+#define RX_TIMEOUT_VALUE              3000
+#define TX_TIMEOUT_VALUE              3000
+/* PING string*/
+#define PING "PING"
+/* PONG string*/
+#define PONG "PONG"
+/*Size of the payload to be sent*/
+/* Size must be greater of equal the PING and PONG*/
+#define MAX_APP_BUFFER_SIZE          255
+#if (PAYLOAD_LEN > MAX_APP_BUFFER_SIZE)
+#error PAYLOAD_LEN must be less or equal than MAX_APP_BUFFER_SIZE
+#endif /* (PAYLOAD_LEN > MAX_APP_BUFFER_SIZE) */
+/* wait for remote to be in Rx, before sending a Tx frame*/
+#define RX_TIME_MARGIN                200
+/* Afc bandwidth in Hz */
+#define FSK_AFC_BANDWIDTH             83333
+/* USER CODE END PD */
+
+
+States_t State = RX;
+
+int8_t RssiValue = 0;
+int8_t SnrValue = 0;
+
+bool isMaster = true;
+
+static uint8_t BufferRx[MAX_APP_BUFFER_SIZE];
+/* App Tx Buffer*/
+static uint8_t BufferTx[MAX_APP_BUFFER_SIZE];
+uint16_t RxBufferSize = 0;
+
+
+/* random delay to make sure 2 devices will sync*/
+/* the closest the random delays are, the longer it will
+   take for the devices to sync when started simultaneously*/
+static int32_t random_delay;
+
 /* Radio events function pointer */
 static RadioEvents_t RadioEvents;
 /* USER CODE BEGIN PV */
@@ -83,6 +134,13 @@ static void OnRxTimeout(void);
   */
 static void OnRxError(void);
 
+/*!
+ * @brief PingPong state machine implementation
+ * @param  none
+ * @retval none
+ */
+static void PingPong_Process(void);
+
 /* USER CODE BEGIN PFP */
 /* USER CODE END PFP */
 
@@ -92,17 +150,84 @@ void SubghzApp_Init(void)
   /* USER CODE BEGIN SubghzApp_Init_1 */
 
   /* USER CODE END SubghzApp_Init_1 */
+	APP_LOG(TS_OFF, VLEVEL_M, "\n\rPING PONG\n\r");
+	  /* Get SubGHY_Phy APP version*/
+	  APP_LOG(TS_OFF, VLEVEL_M, "APPLICATION_VERSION: V%X.%X.%X\r\n",
+	          (uint8_t)(APP_VERSION_MAIN),
+	          (uint8_t)(APP_VERSION_SUB1),
+	          (uint8_t)(APP_VERSION_SUB2));
 
-  /* Radio initialization */
-  RadioEvents.TxDone = OnTxDone;
-  RadioEvents.RxDone = OnRxDone;
-  RadioEvents.TxTimeout = OnTxTimeout;
-  RadioEvents.RxTimeout = OnRxTimeout;
-  RadioEvents.RxError = OnRxError;
+	  /* Get MW SubGhz_Phy info */
+	  APP_LOG(TS_OFF, VLEVEL_M, "MW_RADIO_VERSION:    V%X.%X.%X\r\n",
+	          (uint8_t)(SUBGHZ_PHY_VERSION_MAIN),
+	          (uint8_t)(SUBGHZ_PHY_VERSION_SUB1),
+	          (uint8_t)(SUBGHZ_PHY_VERSION_SUB2));
 
-  Radio.Init(&RadioEvents);
+	  /* Radio initialization */
+	  RadioEvents.TxDone = OnTxDone;
+	  RadioEvents.RxDone = OnRxDone;
+	  RadioEvents.TxTimeout = OnTxTimeout;
+	  RadioEvents.RxTimeout = OnRxTimeout;
+	  RadioEvents.RxError = OnRxError;
 
-  /* USER CODE BEGIN SubghzApp_Init_2 */
+	  Radio.Init(&RadioEvents);
+
+	  /*calculate random delay for synchronization*/
+	    random_delay = (Radio.Random()) >> 22; /*10bits random e.g. from 0 to 1023 ms*/
+
+	    /* Radio Set frequency */
+	    Radio.SetChannel(RF_FREQUENCY);
+
+	/* Radio configuration */
+	#if ((USE_MODEM_LORA == 1) && (USE_MODEM_FSK == 0))
+	      APP_LOG(TS_OFF, VLEVEL_M, "---------------\n\r");
+	      APP_LOG(TS_OFF, VLEVEL_M, "LORA_MODULATION\n\r");
+	      APP_LOG(TS_OFF, VLEVEL_M, "LORA_BW=%d kHz\n\r", (1 << LORA_BANDWIDTH) * 125);
+	      APP_LOG(TS_OFF, VLEVEL_M, "LORA_SF=%d\n\r", LORA_SPREADING_FACTOR);
+
+	Radio.SetTxConfig(MODEM_LORA, TX_OUTPUT_POWER, 0, LORA_BANDWIDTH,
+	                    LORA_SPREADING_FACTOR, LORA_CODINGRATE,
+	                    LORA_PREAMBLE_LENGTH, LORA_FIX_LENGTH_PAYLOAD_ON,
+	                    true, 0, 0, LORA_IQ_INVERSION_ON, TX_TIMEOUT_VALUE);
+
+	 Radio.SetRxConfig(MODEM_LORA, LORA_BANDWIDTH, LORA_SPREADING_FACTOR,
+	                    LORA_CODINGRATE, 0, LORA_PREAMBLE_LENGTH,
+	                    LORA_SYMBOL_TIMEOUT, LORA_FIX_LENGTH_PAYLOAD_ON,
+	                    0, true, 0, 0, LORA_IQ_INVERSION_ON, true);
+
+	  Radio.SetMaxPayloadLength(MODEM_LORA, MAX_APP_BUFFER_SIZE);
+
+	#elif ((USE_MODEM_LORA == 0) && (USE_MODEM_FSK == 1))
+	  APP_LOG(TS_OFF, VLEVEL_M, "---------------\n\r");
+	  APP_LOG(TS_OFF, VLEVEL_M, "FSK_MODULATION\n\r");
+	  APP_LOG(TS_OFF, VLEVEL_M, "FSK_BW=%d Hz\n\r", FSK_BANDWIDTH);
+	  APP_LOG(TS_OFF, VLEVEL_M, "FSK_DR=%d bits/s\n\r", FSK_DATARATE);
+
+	  Radio.SetTxConfig(MODEM_FSK, TX_OUTPUT_POWER, FSK_FDEV, 0,
+	                    FSK_DATARATE, 0,
+	                    FSK_PREAMBLE_LENGTH, FSK_FIX_LENGTH_PAYLOAD_ON,
+	                    true, 0, 0, 0, TX_TIMEOUT_VALUE);
+
+	  Radio.SetRxConfig(MODEM_FSK, FSK_BANDWIDTH, FSK_DATARATE,
+	                    0, FSK_AFC_BANDWIDTH, FSK_PREAMBLE_LENGTH,
+	                    0, FSK_FIX_LENGTH_PAYLOAD_ON, 0, true,
+	                    0, 0, false, true);
+
+	  Radio.SetMaxPayloadLength(MODEM_FSK, MAX_APP_BUFFER_SIZE);
+
+	#else
+	#error "Please define a frequency band in the sys_conf.h file."
+	#endif /* USE_MODEM_LORA | USE_MODEM_FSK */
+
+
+	   /*fills tx buffer*/
+	   memset(BufferTx, 0x0, MAX_APP_BUFFER_SIZE);
+
+	   APP_LOG(TS_ON, VLEVEL_L, "rand=%d\n\r", random_delay);
+	   /*starts reception*/
+	   Radio.Rx(RX_TIMEOUT_VALUE + random_delay);
+
+	  UTIL_SEQ_RegTask((1 << CFG_SEQ_Task_PingPong_Process), UTIL_SEQ_RFU, PingPong_Process);
 
   /* USER CODE END SubghzApp_Init_2 */
 }
@@ -112,33 +237,188 @@ void SubghzApp_Init(void)
 /* USER CODE END EF */
 
 /* Private functions ---------------------------------------------------------*/
+
+static void PingPong_Process(void)
+{
+  Radio.Sleep();
+
+  switch (State)
+  {
+    case RX:
+
+      if (isMaster == true)
+      {
+        if (RxBufferSize > 0)
+        {
+          if (strncmp((const char *)BufferRx, PONG, sizeof(PONG) - 1) == 0)
+          {
+            /* Add delay between RX and TX */
+            HAL_Delay(Radio.GetWakeupTime() + RX_TIME_MARGIN);
+            /* master sends PING*/
+            APP_LOG(TS_ON, VLEVEL_L, "..."
+                    "PING"
+                    "\n\r");
+            APP_LOG(TS_ON, VLEVEL_L, "Master Tx start\n\r");
+            memcpy(BufferTx, PING, sizeof(PING) - 1);
+            Radio.Send(BufferTx, PAYLOAD_LEN);
+          }
+          else if (strncmp((const char *)BufferRx, PING, sizeof(PING) - 1) == 0)
+          {
+            /* A master already exists then become a slave */
+            isMaster = false;
+            APP_LOG(TS_ON, VLEVEL_L, "Slave Rx start\n\r");
+            Radio.Rx(RX_TIMEOUT_VALUE);
+          }
+          else /* valid reception but neither a PING or a PONG message */
+          {
+            /* Set device as master and start again */
+            isMaster = true;
+            APP_LOG(TS_ON, VLEVEL_L, "Master Rx start\n\r");
+            Radio.Rx(RX_TIMEOUT_VALUE);
+          }
+        }
+      }
+      else
+      {
+        if (RxBufferSize > 0)
+        {
+          if (strncmp((const char *)BufferRx, PING, sizeof(PING) - 1) == 0)
+          {
+
+            /* Add delay between RX and TX */
+            HAL_Delay(Radio.GetWakeupTime() + RX_TIME_MARGIN);
+            /*slave sends PONG*/
+            APP_LOG(TS_ON, VLEVEL_L, "..."
+                    "PONG"
+                    "\n\r");
+            APP_LOG(TS_ON, VLEVEL_L, "Slave  Tx start\n\r");
+            memcpy(BufferTx, PONG, sizeof(PONG) - 1);
+            Radio.Send(BufferTx, PAYLOAD_LEN);
+          }
+          else /* valid reception but not a PING as expected */
+          {
+            /* Set device as master and start again */
+            isMaster = true;
+            APP_LOG(TS_ON, VLEVEL_L, "Master Rx start\n\r");
+            Radio.Rx(RX_TIMEOUT_VALUE);
+          }
+        }
+      }
+      break;
+    case TX:
+      APP_LOG(TS_ON, VLEVEL_L, "Rx start\n\r");
+      Radio.Rx(RX_TIMEOUT_VALUE);
+      break;
+    case RX_TIMEOUT:
+    case RX_ERROR:
+      if (isMaster == true)
+      {
+        /* Send the next PING frame */
+        /* Add delay between RX and TX*/
+        /* add random_delay to force sync between boards after some trials*/
+        HAL_Delay(Radio.GetWakeupTime() + RX_TIME_MARGIN + random_delay);
+        APP_LOG(TS_ON, VLEVEL_L, "Master Tx start\n\r");
+        /* master sends PING*/
+        memcpy(BufferTx, PING, sizeof(PING) - 1);
+        Radio.Send(BufferTx, PAYLOAD_LEN);
+      }
+      else
+      {
+        APP_LOG(TS_ON, VLEVEL_L, "Slave Rx start\n\r");
+        Radio.Rx(RX_TIMEOUT_VALUE);
+      }
+      break;
+    case TX_TIMEOUT:
+      APP_LOG(TS_ON, VLEVEL_L, "Slave Rx start\n\r");
+      Radio.Rx(RX_TIMEOUT_VALUE);
+      break;
+    default:
+      break;
+  }
+}
+
 static void OnTxDone(void)
 {
   /* USER CODE BEGIN OnTxDone */
+	 APP_LOG(TS_ON, VLEVEL_L, "OnTxDone\n\r");
+
+	  State = TX;
+	  UTIL_SEQ_SetTask((1 << CFG_SEQ_Task_PingPong_Process), CFG_SEQ_Prio_0);
+
   /* USER CODE END OnTxDone */
 }
 
 static void OnRxDone(uint8_t *payload, uint16_t size, int16_t rssi, int8_t LoraSnr_FskCfo)
 {
   /* USER CODE BEGIN OnRxDone */
+  APP_LOG(TS_ON, VLEVEL_L, "OnRxDone\n\r");
+#if ((USE_MODEM_LORA == 1) && (USE_MODEM_FSK == 0))
+  APP_LOG(TS_ON, VLEVEL_L, "RssiValue=%d dBm, SnrValue=%ddB\n\r", rssi, LoraSnr_FskCfo);
+  /* Record payload Signal to noise ratio in Lora*/
+  SnrValue = LoraSnr_FskCfo;
+#endif /* USE_MODEM_LORA | USE_MODEM_FSK */
+#if ((USE_MODEM_LORA == 0) && (USE_MODEM_FSK == 1))
+  APP_LOG(TS_ON, VLEVEL_L, "RssiValue=%d dBm, Cfo=%dkHz\n\r", rssi, LoraSnr_FskCfo);
+  SnrValue = 0; /*not applicable in GFSK*/
+#endif /* USE_MODEM_LORA | USE_MODEM_FSK */
+  /* Update the State of the FSM*/
+  State = RX;
+  /* Clear BufferRx*/
+  memset(BufferRx, 0, MAX_APP_BUFFER_SIZE);
+  /* Record payload size*/
+  RxBufferSize = size;
+  if (RxBufferSize <= MAX_APP_BUFFER_SIZE)
+  {
+    memcpy(BufferRx, payload, RxBufferSize);
+  }
+  /* Record Received Signal Strength*/
+  RssiValue = rssi;
+  /* Record payload content*/
+  APP_LOG(TS_ON, VLEVEL_H, "payload. size=%d \n\r", size);
+  for (int i = 0; i < PAYLOAD_LEN; i++)
+  {
+    APP_LOG(TS_OFF, VLEVEL_H, "%02X", BufferRx[i]);
+    if (i % 16 == 15)
+    {
+      APP_LOG(TS_OFF, VLEVEL_H, "\n\r");
+    }
+  }
+  APP_LOG(TS_OFF, VLEVEL_H, "\n\r");
+  /* Run PingPong process in background*/
+  UTIL_SEQ_SetTask((1 << CFG_SEQ_Task_SubGHz_Phy_App_Process), CFG_SEQ_Prio_0);
   /* USER CODE END OnRxDone */
 }
 
 static void OnTxTimeout(void)
 {
   /* USER CODE BEGIN OnTxTimeout */
+	APP_LOG(TS_ON, VLEVEL_L,  "OnTxTimeout\n\r");
+
+	  State = TX_TIMEOUT;
+	  UTIL_SEQ_SetTask((1 << CFG_SEQ_Task_PingPong_Process), CFG_SEQ_Prio_0);
+
   /* USER CODE END OnTxTimeout */
 }
 
 static void OnRxTimeout(void)
 {
   /* USER CODE BEGIN OnRxTimeout */
+	  APP_LOG(TS_ON, VLEVEL_L,  "OnRxTimeout\n\r");
+
+	  State = RX_TIMEOUT;
+	  UTIL_SEQ_SetTask((1 << CFG_SEQ_Task_PingPong_Process), CFG_SEQ_Prio_0);
+
   /* USER CODE END OnRxTimeout */
 }
 
 static void OnRxError(void)
 {
   /* USER CODE BEGIN OnRxError */
+	  APP_LOG(TS_ON, VLEVEL_L, "OnRxError\n\r");
+
+	  State = RX_ERROR;
+	  UTIL_SEQ_SetTask((1 << CFG_SEQ_Task_PingPong_Process), CFG_SEQ_Prio_0);
+
   /* USER CODE END OnRxError */
 }
 

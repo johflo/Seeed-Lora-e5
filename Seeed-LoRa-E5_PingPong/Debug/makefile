@@ -61,6 +61,9 @@ default.size.stdout \
 OBJDUMP_LIST += \
 Seeed-LoRa-E5_PingPong.list \
 
+OBJCOPY_HEX += \
+Seeed-LoRa-E5_PingPong.hex \
+
 
 # All Target
 all: main-build
@@ -84,12 +87,17 @@ Seeed-LoRa-E5_PingPong.list: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOO
 	@echo 'Finished building: $@'
 	@echo ' '
 
+Seeed-LoRa-E5_PingPong.hex: $(EXECUTABLES) makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-objcopy  -O ihex $(EXECUTABLES) "Seeed-LoRa-E5_PingPong.hex"
+	@echo 'Finished building: $@'
+	@echo ' '
+
 # Other Targets
 clean:
-	-$(RM) Seeed-LoRa-E5_PingPong.elf Seeed-LoRa-E5_PingPong.list Seeed-LoRa-E5_PingPong.map default.size.stdout
+	-$(RM) Seeed-LoRa-E5_PingPong.elf Seeed-LoRa-E5_PingPong.hex Seeed-LoRa-E5_PingPong.list Seeed-LoRa-E5_PingPong.map default.size.stdout
 	-@echo ' '
 
-secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
+secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST) $(OBJCOPY_HEX)
 
 fail-specified-linker-script-missing:
 	@echo 'Error: Cannot find the specified linker script. Check the linker settings in the build configuration.'

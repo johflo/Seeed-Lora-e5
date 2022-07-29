@@ -42,6 +42,7 @@ extern "C" {
 typedef enum
 {
   /* USER CODE BEGIN CFG_LPM_Id_t_0 */
+	CFG_SEQ_Task_PingPong_Process,
 
   /* USER CODE END CFG_LPM_Id_t_0 */
   CFG_LPM_APPLI_Id,
