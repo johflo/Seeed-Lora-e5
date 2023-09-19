@@ -1,13 +1,10 @@
 Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/radio.o: \
  ../Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/radio.c \
- ../SubGHz_Phy/Target/timer.h ../Utilities/timer/stm32_timer.h \
- ../Drivers/CMSIS/Include/cmsis_compiler.h \
- ../Drivers/CMSIS/Include/cmsis_gcc.h ../Core/Inc/utilities_conf.h \
- ../Utilities/misc/stm32_mem.h ../Utilities/misc/stm32_tiny_vsnprintf.h \
- ../Core/Inc/utilities_def.h \
  ../Middlewares/Third_Party/SubGHz_Phy/radio.h \
+ ../Middlewares/Third_Party/SubGHz_Phy/radio_def.h \
  ../Middlewares/Third_Party/SubGHz_Phy/radio_ex.h \
- ../Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/radio_fw.h \
+ ../Middlewares/Third_Party/SubGHz_Phy/lr_fhss_v1_base_types.h \
+ ../Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/wl_lr_fhss.h \
  ../Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/radio_driver.h \
  ../SubGHz_Phy/Target/radio_conf.h ../Core/Inc/platform.h \
  ../Drivers/CMSIS/Device/ST/STM32WLxx/Include/stm32wlxx.h \
@@ -15,6 +12,7 @@ Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/radio.o: \
  ../Drivers/CMSIS/Include/core_cm4.h \
  ../Drivers/CMSIS/Include/cmsis_version.h \
  ../Drivers/CMSIS/Include/cmsis_compiler.h \
+ ../Drivers/CMSIS/Include/cmsis_gcc.h \
  ../Drivers/CMSIS/Include/mpu_armv7.h \
  ../Drivers/CMSIS/Device/ST/STM32WLxx/Include/system_stm32wlxx.h \
  ../Drivers/STM32WLxx_HAL_Driver/Inc/stm32wlxx_hal.h \
@@ -51,26 +49,29 @@ Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/radio.o: \
  ../Drivers/STM32WLxx_HAL_Driver/Inc/stm32wlxx_ll_system.h \
  ../Core/Inc/main.h \
  ../Drivers/STM32WLxx_HAL_Driver/Inc/stm32wlxx_ll_gpio.h \
- C:/Users/johannes.florineth/STM32CubeIDE/LoRa-e5/Seeed-LoRa-E5_PingPong/Drivers/BSP/STM32WLxx_Nucleo/stm32wlxx_nucleo_radio.h \
- C:/Users/johannes.florineth/STM32CubeIDE/LoRa-e5/Seeed-LoRa-E5_PingPong/Drivers/BSP/STM32WLxx_Nucleo/stm32wlxx_nucleo_errno.h \
+ C:/Users/johannes.florineth/projects/Seeed-Lora-e5/Seeed-LoRa-E5_PingPong/Drivers/BSP/STM32WLxx_Nucleo/stm32wlxx_nucleo_radio.h \
+ C:/Users/johannes.florineth/projects/Seeed-Lora-e5/Seeed-LoRa-E5_PingPong/Drivers/BSP/STM32WLxx_Nucleo/stm32wlxx_nucleo_errno.h \
  ../Core/Inc/stm32wlxx_nucleo_conf.h \
- C:/Users/johannes.florineth/STM32CubeIDE/LoRa-e5/Seeed-LoRa-E5_PingPong/Drivers/BSP/STM32WLxx_Nucleo/stm32wlxx_nucleo.h \
- ../Core/Inc/subghz.h ../SubGHz_Phy/Target/mw_log_conf.h \
+ C:/Users/johannes.florineth/projects/Seeed-Lora-e5/Seeed-LoRa-E5_PingPong/Drivers/BSP/STM32WLxx_Nucleo/stm32wlxx_nucleo.h \
+ ../Core/Inc/subghz.h ../Utilities/misc/stm32_mem.h \
+ ../Core/Inc/utilities_conf.h ../Drivers/CMSIS/Include/cmsis_compiler.h \
+ ../Utilities/misc/stm32_tiny_vsnprintf.h ../Core/Inc/utilities_def.h \
+ ../SubGHz_Phy/Target/mw_log_conf.h \
  ../Utilities/trace/adv_trace/stm32_adv_trace.h \
  ../SubGHz_Phy/Target/radio_board_if.h ../Core/Inc/utilities_def.h \
  ../Core/Inc/sys_debug.h ../Core/Inc/sys_conf.h ../Core/Inc/platform.h \
+ ../Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/lr_fhss_mac.h \
+ ../Middlewares/Third_Party/SubGHz_Phy/radio_def.h \
+ ../Middlewares/Third_Party/SubGHz_Phy/lr_fhss_v1_base_types.h \
+ ../SubGHz_Phy/Target/timer.h ../Utilities/timer/stm32_timer.h \
+ ../Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/radio_fw.h \
+ ../Middlewares/Third_Party/SubGHz_Phy/radio_ex.h \
  ../SubGHz_Phy/Target/mw_log_conf.h
-../SubGHz_Phy/Target/timer.h:
-../Utilities/timer/stm32_timer.h:
-../Drivers/CMSIS/Include/cmsis_compiler.h:
-../Drivers/CMSIS/Include/cmsis_gcc.h:
-../Core/Inc/utilities_conf.h:
-../Utilities/misc/stm32_mem.h:
-../Utilities/misc/stm32_tiny_vsnprintf.h:
-../Core/Inc/utilities_def.h:
 ../Middlewares/Third_Party/SubGHz_Phy/radio.h:
+../Middlewares/Third_Party/SubGHz_Phy/radio_def.h:
 ../Middlewares/Third_Party/SubGHz_Phy/radio_ex.h:
-../Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/radio_fw.h:
+../Middlewares/Third_Party/SubGHz_Phy/lr_fhss_v1_base_types.h:
+../Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/wl_lr_fhss.h:
 ../Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/radio_driver.h:
 ../SubGHz_Phy/Target/radio_conf.h:
 ../Core/Inc/platform.h:
@@ -79,6 +80,7 @@ Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/radio.o: \
 ../Drivers/CMSIS/Include/core_cm4.h:
 ../Drivers/CMSIS/Include/cmsis_version.h:
 ../Drivers/CMSIS/Include/cmsis_compiler.h:
+../Drivers/CMSIS/Include/cmsis_gcc.h:
 ../Drivers/CMSIS/Include/mpu_armv7.h:
 ../Drivers/CMSIS/Device/ST/STM32WLxx/Include/system_stm32wlxx.h:
 ../Drivers/STM32WLxx_HAL_Driver/Inc/stm32wlxx_hal.h:
@@ -115,11 +117,16 @@ Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/radio.o: \
 ../Drivers/STM32WLxx_HAL_Driver/Inc/stm32wlxx_ll_system.h:
 ../Core/Inc/main.h:
 ../Drivers/STM32WLxx_HAL_Driver/Inc/stm32wlxx_ll_gpio.h:
-C:/Users/johannes.florineth/STM32CubeIDE/LoRa-e5/Seeed-LoRa-E5_PingPong/Drivers/BSP/STM32WLxx_Nucleo/stm32wlxx_nucleo_radio.h:
-C:/Users/johannes.florineth/STM32CubeIDE/LoRa-e5/Seeed-LoRa-E5_PingPong/Drivers/BSP/STM32WLxx_Nucleo/stm32wlxx_nucleo_errno.h:
+C:/Users/johannes.florineth/projects/Seeed-Lora-e5/Seeed-LoRa-E5_PingPong/Drivers/BSP/STM32WLxx_Nucleo/stm32wlxx_nucleo_radio.h:
+C:/Users/johannes.florineth/projects/Seeed-Lora-e5/Seeed-LoRa-E5_PingPong/Drivers/BSP/STM32WLxx_Nucleo/stm32wlxx_nucleo_errno.h:
 ../Core/Inc/stm32wlxx_nucleo_conf.h:
-C:/Users/johannes.florineth/STM32CubeIDE/LoRa-e5/Seeed-LoRa-E5_PingPong/Drivers/BSP/STM32WLxx_Nucleo/stm32wlxx_nucleo.h:
+C:/Users/johannes.florineth/projects/Seeed-Lora-e5/Seeed-LoRa-E5_PingPong/Drivers/BSP/STM32WLxx_Nucleo/stm32wlxx_nucleo.h:
 ../Core/Inc/subghz.h:
+../Utilities/misc/stm32_mem.h:
+../Core/Inc/utilities_conf.h:
+../Drivers/CMSIS/Include/cmsis_compiler.h:
+../Utilities/misc/stm32_tiny_vsnprintf.h:
+../Core/Inc/utilities_def.h:
 ../SubGHz_Phy/Target/mw_log_conf.h:
 ../Utilities/trace/adv_trace/stm32_adv_trace.h:
 ../SubGHz_Phy/Target/radio_board_if.h:
@@ -127,4 +134,11 @@ C:/Users/johannes.florineth/STM32CubeIDE/LoRa-e5/Seeed-LoRa-E5_PingPong/Drivers/
 ../Core/Inc/sys_debug.h:
 ../Core/Inc/sys_conf.h:
 ../Core/Inc/platform.h:
+../Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/lr_fhss_mac.h:
+../Middlewares/Third_Party/SubGHz_Phy/radio_def.h:
+../Middlewares/Third_Party/SubGHz_Phy/lr_fhss_v1_base_types.h:
+../SubGHz_Phy/Target/timer.h:
+../Utilities/timer/stm32_timer.h:
+../Middlewares/Third_Party/SubGHz_Phy/stm32_radio_driver/radio_fw.h:
+../Middlewares/Third_Party/SubGHz_Phy/radio_ex.h:
 ../SubGHz_Phy/Target/mw_log_conf.h:

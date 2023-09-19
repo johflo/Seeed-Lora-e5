@@ -53,9 +53,9 @@ extern "C" {
   */
 #define DEBUG_SUBGHZSPI_MONITORING_ENABLED   0
 
-#define DEBUG_RF_NRESET_ENABLED_ENABLED      0
+#define DEBUG_RF_NRESET_ENABLED              0
 
-#define DEBUG_RF_HSE32RDY_ENABLED_ENABLED    0
+#define DEBUG_RF_HSE32RDY_ENABLED            0
 
 #define DEBUG_RF_SMPSRDY_ENABLED             0
 
@@ -75,7 +75,7 @@ extern "C" {
   * @brief Disable Low Power mode
   * @note  0: LowPowerMode enabled. MCU enters stop2 mode, 1: LowPowerMode disabled. MCU enters sleep mode only
   */
-#define LOW_POWER_DISABLE                    1
+#define LOW_POWER_DISABLE                    0
 
 /* USER CODE BEGIN EC */
 

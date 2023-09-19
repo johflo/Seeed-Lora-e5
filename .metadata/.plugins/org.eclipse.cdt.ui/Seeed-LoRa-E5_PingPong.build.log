@@ -1,0 +1,10 @@
+21:42:25 **** Incremental Build of configuration Debug for project Seeed-LoRa-E5_PingPong ****
+make -j8 all 
+arm-none-eabi-size   Seeed-LoRa-E5_PingPong.elf 
+   text	   data	    bss	    dec	    hex	filename
+  49880	     36	   3436	  53352	   d068	Seeed-LoRa-E5_PingPong.elf
+Finished building: default.size.stdout
+ 
+
+21:42:25 Build Finished. 0 errors, 0 warnings. (took 768ms)
+

@@ -1,4 +1,3 @@
-../Drivers/STM32WLxx_HAL_Driver/Inc/stm32wlxx_ll_pwr.h:421:26:LL_PWR_IsEnabledBkUpAccess	4	static
 ../Drivers/STM32WLxx_HAL_Driver/Inc/stm32wlxx_ll_rcc.h:1019:26:LL_RCC_HSE_IsEnabledDiv2	4	static
 ../Drivers/STM32WLxx_HAL_Driver/Inc/stm32wlxx_ll_rcc.h:1128:26:LL_RCC_HSI_IsReady	4	static
 ../Drivers/STM32WLxx_HAL_Driver/Inc/stm32wlxx_ll_rcc.h:1281:22:LL_RCC_LSE_EnableCSS	4	static
@@ -41,7 +40,6 @@
 ../Drivers/STM32WLxx_HAL_Driver/Inc/stm32wlxx_ll_rcc.h:2660:26:LL_RCC_PLL_GetQ	4	static
 ../Drivers/STM32WLxx_HAL_Driver/Inc/stm32wlxx_ll_rcc.h:2696:26:LL_RCC_PLL_GetDivider	4	static
 ../Drivers/STM32WLxx_HAL_Driver/Inc/stm32wlxx_ll_rcc.h:2853:26:LL_RCC_PLL_GetMainSource	4	static
-../Drivers/STM32WLxx_HAL_Driver/Inc/stm32wlxx_ll_bus.h:449:22:LL_AHB2_GRP1_EnableClock	24	static
 ../Drivers/STM32WLxx_HAL_Driver/Inc/stm32wlxx_ll_exti.h:265:22:LL_EXTI_EnableIT_0_31	16	static
 ../Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_rcc_ex.c:113:19:HAL_RCCEx_PeriphCLKConfig	32	static
 ../Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_rcc_ex.c:345:6:HAL_RCCEx_GetPeriphCLKConfig	16	static
@@ -52,9 +50,9 @@
 ../Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_rcc_ex.c:968:6:HAL_RCCEx_EnableLSECSS_IT	8	static
 ../Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_rcc_ex.c:988:6:HAL_RCCEx_LSECSS_IRQHandler	8	static
 ../Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_rcc_ex.c:1003:13:HAL_RCCEx_LSECSS_Callback	4	static
-../Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_rcc_ex.c:1018:6:HAL_RCCEx_EnableLSCO	40	static
-../Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_rcc_ex.c:1056:6:HAL_RCCEx_DisableLSCO	16	static
-../Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_rcc_ex.c:1083:6:HAL_RCCEx_EnableMSIPLLMode	8	static
-../Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_rcc_ex.c:1093:6:HAL_RCCEx_DisableMSIPLLMode	8	static
-../Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_rcc_ex.c:1115:17:RCC_PLL_GetFreqDomain_P	24	static
-../Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_rcc_ex.c:1165:17:RCC_PLL_GetFreqDomain_Q	24	static
+../Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_rcc_ex.c:1018:6:HAL_RCCEx_EnableLSCO	16	static
+../Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_rcc_ex.c:1031:6:HAL_RCCEx_DisableLSCO	8	static
+../Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_rcc_ex.c:1043:6:HAL_RCCEx_EnableMSIPLLMode	8	static
+../Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_rcc_ex.c:1053:6:HAL_RCCEx_DisableMSIPLLMode	8	static
+../Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_rcc_ex.c:1075:17:RCC_PLL_GetFreqDomain_P	24	static
+../Drivers/STM32WLxx_HAL_Driver/Src/stm32wlxx_hal_rcc_ex.c:1125:17:RCC_PLL_GetFreqDomain_Q	24	static

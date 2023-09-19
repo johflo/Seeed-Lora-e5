@@ -1,6 +1,6 @@
 ################################################################################
 # Automatically-generated file. Do not edit!
-# Toolchain: GNU Tools for STM32 (10.3-2021.10)
+# Toolchain: GNU Tools for STM32 (11.3.rel1)
 ################################################################################
 
 -include ../makefile.init
@@ -72,8 +72,8 @@ all: main-build
 main-build: Seeed-LoRa-E5_PingPong.elf secondary-outputs
 
 # Tool invocations
-Seeed-LoRa-E5_PingPong.elf Seeed-LoRa-E5_PingPong.map: $(OBJS) $(USER_OBJS) C:\Users\johannes.florineth\STM32CubeIDE\LoRa-e5\Seeed-LoRa-E5_PingPong\STM32WLE5JCIX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "Seeed-LoRa-E5_PingPong.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\johannes.florineth\STM32CubeIDE\LoRa-e5\Seeed-LoRa-E5_PingPong\STM32WLE5JCIX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Seeed-LoRa-E5_PingPong.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Seeed-LoRa-E5_PingPong.elf Seeed-LoRa-E5_PingPong.map: $(OBJS) $(USER_OBJS) C:\Users\johannes.florineth\projects\Seeed-Lora-e5\Seeed-LoRa-E5_PingPong\STM32WLE5JCIX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "Seeed-LoRa-E5_PingPong.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"C:\Users\johannes.florineth\projects\Seeed-Lora-e5\Seeed-LoRa-E5_PingPong\STM32WLE5JCIX_FLASH.ld" --specs=nosys.specs -Wl,-Map="Seeed-LoRa-E5_PingPong.map" -Wl,--gc-sections -static --specs=nano.specs -mfloat-abi=soft -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
