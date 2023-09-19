@@ -26,6 +26,7 @@
 # Build results
 [Dd]ebug/
 [Rr]elease/
+.metadata/
 *_i.c
 *_p.c
 *.ilk
