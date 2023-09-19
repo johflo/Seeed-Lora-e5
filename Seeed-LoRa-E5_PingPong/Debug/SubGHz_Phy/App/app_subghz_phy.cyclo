@@ -1,0 +1,2 @@
+../SubGHz_Phy/App/app_subghz_phy.c:63:6:MX_SubGHz_Phy_Init	1
+../SubGHz_Phy/App/app_subghz_phy.c:78:6:MX_SubGHz_Phy_Process	1
