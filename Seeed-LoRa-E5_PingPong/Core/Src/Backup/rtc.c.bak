@@ -68,12 +68,12 @@ void MX_RTC_Init(void)
 
   /** Enable the Alarm A
   */
-  sAlarm.BinaryAutoClr = RTC_ALARMSUBSECONDBIN_AUTOCLR_NO;
+  sAlarm.BinaryAutoClr = RTC_ALARMSUBSECONDBIN_AUTOCLR_YES;
   sAlarm.AlarmTime.SubSeconds = 0x0;
   sAlarm.AlarmMask = RTC_ALARMMASK_NONE;
   sAlarm.AlarmSubSecondMask = RTC_ALARMSUBSECONDBINMASK_NONE;
   sAlarm.Alarm = RTC_ALARM_A;
-  if (HAL_RTC_SetAlarm_IT(&hrtc, &sAlarm, 0) != HAL_OK)
+  if (HAL_RTC_SetAlarm(&hrtc, &sAlarm, 0) != HAL_OK)
   {
     Error_Handler();
   }
@@ -110,8 +110,6 @@ void HAL_RTC_MspInit(RTC_HandleTypeDef* rtcHandle)
     /* RTC interrupt Init */
     HAL_NVIC_SetPriority(TAMP_STAMP_LSECSS_SSRU_IRQn, 0, 0);
     HAL_NVIC_EnableIRQ(TAMP_STAMP_LSECSS_SSRU_IRQn);
-    HAL_NVIC_SetPriority(RTC_Alarm_IRQn, 0, 0);
-    HAL_NVIC_EnableIRQ(RTC_Alarm_IRQn);
   /* USER CODE BEGIN RTC_MspInit 1 */
 
   /* USER CODE END RTC_MspInit 1 */
@@ -132,7 +130,6 @@ void HAL_RTC_MspDeInit(RTC_HandleTypeDef* rtcHandle)
 
     /* RTC interrupt Deinit */
     HAL_NVIC_DisableIRQ(TAMP_STAMP_LSECSS_SSRU_IRQn);
-    HAL_NVIC_DisableIRQ(RTC_Alarm_IRQn);
   /* USER CODE BEGIN RTC_MspDeInit 1 */
 
   /* USER CODE END RTC_MspDeInit 1 */

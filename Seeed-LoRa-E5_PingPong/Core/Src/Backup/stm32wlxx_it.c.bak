@@ -257,20 +257,6 @@ void EXTI15_10_IRQHandler(void)
 }
 
 /**
-  * @brief This function handles RTC Alarms (A and B) Interrupt.
-  */
-void RTC_Alarm_IRQHandler(void)
-{
-  /* USER CODE BEGIN RTC_Alarm_IRQn 0 */
-
-  /* USER CODE END RTC_Alarm_IRQn 0 */
-  HAL_RTC_AlarmIRQHandler(&hrtc);
-  /* USER CODE BEGIN RTC_Alarm_IRQn 1 */
-
-  /* USER CODE END RTC_Alarm_IRQn 1 */
-}
-
-/**
   * @brief This function handles SUBGHZ Radio Interrupt.
   */
 void SUBGHZ_Radio_IRQHandler(void)
